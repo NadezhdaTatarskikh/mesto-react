@@ -12,7 +12,7 @@ const PopupWithForm = ({ name, title, children, text, isOpen, onClose }) => {
         <form className="popup__form">
           {children}
           <button type="submit" className="popup__button">
-            {text}
+            {text || 'Сохранить'}
           </button>
         </form>
       </div>

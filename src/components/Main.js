@@ -1,17 +1,18 @@
 import React from "react";
 import api from "../utils/Api.js";
 import Card from "./Card.js";
+import {useEffect, useState} from 'react';
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   /**Переменные состояния пользователя */
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
   /**Переменные состояния карточек*/
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = useState([]);
 
   /** Получаем данные пользователя с сервера*/
-  React.useEffect(() => {
+  useEffect(() => {
     Promise.all([api.getInitialCards(), api.getUserInfo()])
       .then(([initialCards, data]) => {
         setUserName(data.name);
@@ -23,10 +24,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         console.log(`Ошибка: ${err}`);
       });
   }, []);
-
-  const cardsElements = cards.map((card) => (
-    <Card key={card._id} card={card} onCardClick={onCardClick} />
-  ));
 
   return (
     <main className="content">
@@ -64,7 +61,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         ></button>
       </section>
       <section className="photos">
-        <ul className="photo-grid">{cardsElements}</ul>
+        <ul className="photo-grid">
+          {cards.map((card) => (
+            <Card key={card._id} card={card} onCardClick={onCardClick} />
+          ))}
+        </ul>
       </section>
     </main>
   );

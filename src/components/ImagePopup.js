@@ -10,10 +10,10 @@ const ImagePopup = ({ card, onClose }) => {
         ></button>
         <img
           className="popup__image"
-          src={card ? card.link : "#"}
-          alt={card ? card.name : ""}
+          src={card?.link}
+          alt={card?.name}
         />
-        <h2 className="popup__image-title">{card ? card.name : ""}</h2>
+        <h2 className="popup__image-title">{card?.name}</h2>
       </div>
     </div>
   );
