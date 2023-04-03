@@ -38,8 +38,8 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
   }
-  
-  return (
+
+  return ( 
     <div className="page">
         <Header />
         <Main
