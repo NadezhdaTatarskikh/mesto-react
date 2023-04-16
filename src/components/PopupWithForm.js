@@ -1,4 +1,7 @@
-const PopupWithForm = ({ name, title, children, text, isOpen, onClose }) => {
+import React from "react";
+
+const PopupWithForm = ({ name, title, children, text, isOpen, onClose, onSubmit }) => {
+  
   return (
     <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
       <div className="popup__container">
@@ -9,7 +12,7 @@ const PopupWithForm = ({ name, title, children, text, isOpen, onClose }) => {
           aria-label="Кнопка закрыть"
         ></button>
         <h3 className="popup__header">{title}</h3>
-        <form className="popup__form">
+        <form className="popup__form" onSubmit={onSubmit}>
           {children}
           <button type="submit" className="popup__button">
             {text || 'Сохранить'}

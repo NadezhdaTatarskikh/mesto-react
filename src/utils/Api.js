@@ -27,36 +27,29 @@ class Api {
   }
 
   // Обновляем информацию о пользователе с сервера
-  editUserInfo(data) {
+  editUserInfo({ name, about }) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        name: data.userName,
-        about: data.userJob,
-      }),
+      body: JSON.stringify({ name, about }),
     }).then((res) => this._checkResponse(res));
   }
 
   // Редактирование аватара пользователя
-  editAvatar(data) {
+  editAvatar({ avatar }) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        avatar: data.avatar,
-      }),
+      body: JSON.stringify({ avatar }),
     }).then((res) => this._checkResponse(res));
   }
 
   // Добавим новую карточку
-  newCardElement(data) {
+  newCardElement({ name, link }) {
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        link: data.link,
+      body: JSON.stringify({ name, link,
       }),
     }).then((res) => this._checkResponse(res));
   }
@@ -69,21 +62,21 @@ class Api {
     }).then((res) => this._checkResponse(res));
   }
 
-  // Ставим лайк карточке
-  setLikeCard(_id) {
+  // Ставим и удаляем лайк карточке
+  changeLikeCardStatus(_id, isLiked) {
+    if (isLiked) {
     return fetch(`${this._url}/cards/${_id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then((res) => this._checkResponse(res));
-  }
-
-  // Удаляем лайк
-  deleteLike(_id) {
-    return fetch(`${this._url}/cards/${_id}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
+  } else {
+    return fetch(`${this._url}/cards/${_id}/likes`,
+        {
+          method: 'DELETE',
+          headers: this._headers,
     }).then((res) => this._checkResponse(res));
   }
+}
 }
 
 // api
