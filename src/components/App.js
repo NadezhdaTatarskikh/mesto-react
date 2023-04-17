@@ -87,7 +87,7 @@ function App() {
   function handleCardDelete() {
    api.deleteCard(selectedCard._id)
     .then(() => {
-    setCards((cards) => cards.filter((item) => item._id !==selectedCard._id))
+    setCards((cards) => cards.filter((card) => card._id !==selectedCard._id))
     })
     .then(() => closeAllPopups())
     .catch((err) => {
