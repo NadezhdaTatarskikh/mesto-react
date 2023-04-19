@@ -1,6 +1,6 @@
 import React from "react";
 
-const PopupWithForm = ({ name, title, children, text, isOpen, onClose, onSubmit }) => {
+const PopupWithForm = ({ name, title, children, text, isOpen, onClose, onSubmit, isRenderLoading, renderLoadingTextBtn }) => {
   
   return (
     <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
@@ -15,7 +15,7 @@ const PopupWithForm = ({ name, title, children, text, isOpen, onClose, onSubmit 
         <form className="popup__form" onSubmit={onSubmit}>
           {children}
           <button type="submit" className="popup__button">
-            {text || 'Сохранить'}
+          {isRenderLoading ? renderLoadingTextBtn : text}
           </button>
         </form>
       </div>

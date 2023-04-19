@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
+const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, isRenderLoading, renderLoading }) => {
     const currentUser = React.useContext(CurrentUserContext);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -24,11 +24,11 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
     function handleSubmit(e) {
         // Запрещаем браузеру переходить по адресу формы
         e.preventDefault();
-  
+
         // Передаём значения управляемых компонентов во внешний обработчик
         onUpdateUser({
-          username: name,
-          userJob: description,
+          name,
+          about: description,
         });
       }
 
@@ -40,6 +40,8 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
           isOpen={isOpen}
           onClose={onClose}
           onSubmit={handleSubmit}
+          isRenderLoading={isRenderLoading}
+          renderLoadingTextBtn="Сохранение..."
         >
           <input
             type="text"

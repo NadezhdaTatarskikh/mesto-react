@@ -54,22 +54,22 @@ class Api {
   }
 
   // Удаление карточки
-  deleteCard(_id) {
-    return fetch(`${this._url}/cards/${_id}`, {
+  deleteCard(id) {
+    return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => this._checkResponse(res));
   }
 
   // Ставим и удаляем лайк карточке
-  changeLikeCardStatus(_id, isLiked) {
+  changeLikeCardStatus(id, isLiked) {
     if (isLiked) {
-    return fetch(`${this._url}/cards/${_id}/likes`, {
+    return fetch(`${this._url}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then((res) => this._checkResponse(res));
   } else {
-    return fetch(`${this._url}/cards/${_id}/likes`,
+    return fetch(`${this._url}/cards/${id}/likes`,
         {
           method: 'DELETE',
           headers: this._headers,
