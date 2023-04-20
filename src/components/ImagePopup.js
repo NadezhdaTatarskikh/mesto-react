@@ -8,11 +8,7 @@ const ImagePopup = ({ card, onClose }) => {
           type="button"
           aria-label="Кнопка закрыть"
         ></button>
-        <img
-          className="popup__image"
-          src={card?.link}
-          alt={card?.name}
-        />
+        <img className="popup__image" src={card?.link} alt={card?.name} />
         <h2 className="popup__image-title">{card?.name}</h2>
       </div>
     </div>

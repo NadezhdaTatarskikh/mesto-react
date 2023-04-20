@@ -1,9 +1,16 @@
 import React from "react";
 import Card from "./Card.js";
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
-
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete, cards }) {
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+  cards,
+}) {
   ///Подписка на контекст/
   const currentUser = React.useContext(CurrentUserContext);
   const { name, about, avatar } = currentUser;
@@ -46,7 +53,13 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike
       <section className="photos">
         <ul className="photo-grid">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
+            />
           ))}
         </ul>
       </section>

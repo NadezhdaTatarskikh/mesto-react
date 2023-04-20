@@ -1,22 +1,25 @@
-import React from 'react'
-import Header from './Header.js';
-import Main from './Main.js';
-import ImagePopup from './ImagePopup.js';
-import Footer from './Footer.js';
-import EditProfilePopup from './EditProfilePopup.js';
-import EditAvatarPopup from './EditAvatarPopup.js';
-import AddPlacePopup from './AddPlacePopup.js';
-import PopupWithDeleteCard from './PopupWithDeleteCard.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import api from '../utils/Api.js';
+import React from "react";
+import Header from "./Header.js";
+import Main from "./Main.js";
+import ImagePopup from "./ImagePopup.js";
+import Footer from "./Footer.js";
+import EditProfilePopup from "./EditProfilePopup.js";
+import EditAvatarPopup from "./EditAvatarPopup.js";
+import AddPlacePopup from "./AddPlacePopup.js";
+import PopupWithDeleteCard from "./PopupWithDeleteCard.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import api from "../utils/Api.js";
 
 function App() {
   /**переменные состояния попапов */
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
   const [isCardPopupOpen, setIsCardPopupOpen] = React.useState(false);
-  const [isDeleteCardPopapOpen, setIsDeleteCardPopupOpen] = React.useState(false);
+  const [isDeleteCardPopapOpen, setIsDeleteCardPopupOpen] =
+    React.useState(false);
 
   const [isRenderLoading, setIsRenderLoading] = React.useState(false);
 
@@ -30,26 +33,26 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getUserInfo()])
+    Promise.all([api.getInitialCards(), api.getUserInfo()]);
     api
-    .getUserInfo()
+      .getUserInfo()
       .then((data) => {
-        setCurrentUser(data)
+        setCurrentUser(data);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
     api
-    .getInitialCards()
-    .then((cards) => {
-      setCards(cards);
-    })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    }); 
+      .getInitialCards()
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }, []);
 
-    /**Открытие попапов */
+  /**Открытие попапов */
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -67,10 +70,9 @@ function App() {
     setIsCardPopupOpen(true);
   }
 
-     function handleCardDeleteClick(card) {
+  function handleCardDeleteClick(card) {
     setSelectedCard(card);
-    setIsDeleteCardPopupOpen(true)
-
+    setIsDeleteCardPopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -84,74 +86,83 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked)
-    .then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-  })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    }); 
-  } 
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }
   function handleCardDelete() {
     setIsRenderLoading(true);
-   api.deleteCard(selectedCard._id)
-    .then(() => {
-    setCards((cards) => cards.filter((item) => item._id !==selectedCard._id))
-    })
-    .then(() => closeAllPopups())
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    })
-    .finally(() => setIsRenderLoading(false))
-  } 
+    api
+      .deleteCard(selectedCard._id)
+      .then(() => {
+        setCards((cards) =>
+          cards.filter((item) => item._id !== selectedCard._id)
+        );
+      })
+      .then(() => closeAllPopups())
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => setIsRenderLoading(false));
+  }
 
   function handleAddCard(card) {
     setIsRenderLoading(true);
-    api.newCardElement(card)
-    .then((newCard) => {
-      setCards([newCard, ...cards]);
-      closeAllPopups()
-    })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    })
-    .finally(() => setIsRenderLoading(false))
-  }; 
-
-  /**Изменяем данные пользователя*/
-  function handleUpdateUser(userInfo) {
-    setIsRenderLoading(true);
-    api.editUserInfo(userInfo)
-      .then((userInfoServer) => {
-        setCurrentUser(userInfoServer);
-        closeAllPopups()
+    api
+      .newCardElement(card)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => setIsRenderLoading(false))
-  }; 
+      .finally(() => setIsRenderLoading(false));
+  }
+
+  /**Изменяем данные пользователя*/
+  function handleUpdateUser(userInfo) {
+    setIsRenderLoading(true);
+    api
+      .editUserInfo(userInfo)
+      .then((userInfoServer) => {
+        setCurrentUser(userInfoServer);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => setIsRenderLoading(false));
+  }
 
   /**Изменить аватар пользователя*/
   function handleUpdateAvatar(data) {
     setIsRenderLoading(true);
-    api.editAvatar(data)
-    .then((data) => {
-      setCurrentUser(data)
-    closeAllPopups()
-  })
-  .catch((err) => {
-    console.log(`Ошибка: ${err}`);
-  })
-  .finally(() =>setIsRenderLoading(false))
-}; 
+    api
+      .editAvatar(data)
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => setIsRenderLoading(false));
+  }
 
-  return ( 
+  return (
     <CurrentUserContext.Provider value={currentUser}>
-    <div className="page">
+      <div className="page">
         <Header />
         <Main
           onEditProfile={handleEditProfileClick}
@@ -166,7 +177,7 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
-          isRenderLoading={isRenderLoading} 
+          isRenderLoading={isRenderLoading}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
@@ -174,25 +185,25 @@ function App() {
           onAddPlace={handleAddCard}
           isRenderLoading={isRenderLoading}
         />
-        <ImagePopup 
-            card={selectedCard} 
-            isOpen={isCardPopupOpen}
-            onClose={closeAllPopups} 
-            />
-        <PopupWithDeleteCard
-         isOpen={isDeleteCardPopapOpen}
-         onClose={closeAllPopups}
-         onDeleteCard={handleCardDelete}
-         isRenderLoading={isRenderLoading}
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isCardPopupOpen}
+          onClose={closeAllPopups}
         />
-        <EditAvatarPopup 
-            isOpen={isEditAvatarPopupOpen} 
-            onClose={closeAllPopups} 
-            onUpdateAvatar={handleUpdateAvatar}
-            isRenderLoading={isRenderLoading}
-            /> 
+        <PopupWithDeleteCard
+          isOpen={isDeleteCardPopapOpen}
+          onClose={closeAllPopups}
+          onDeleteCard={handleCardDelete}
+          isRenderLoading={isRenderLoading}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          isRenderLoading={isRenderLoading}
+        />
         <Footer />
-    </div>
+      </div>
     </CurrentUserContext.Provider>
   );
 }
