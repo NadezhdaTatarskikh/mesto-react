@@ -49,12 +49,7 @@ function App() {
     }); 
   }, []);
 
-  /**Рендер загрузки*/
-  function renderLoading() {
-    setIsRenderLoading((isRenderLoading) => !isRenderLoading);
-  };
-
-  /**Открытие попапов */
+    /**Открытие попапов */
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -101,6 +96,7 @@ function App() {
     }); 
   } 
   function handleCardDelete() {
+    setIsRenderLoading(true);
    api.deleteCard(selectedCard._id)
     .then(() => {
     setCards((cards) => cards.filter((item) => item._id !==selectedCard._id))
@@ -109,9 +105,11 @@ function App() {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+    .finally(() => setIsRenderLoading(false))
   } 
 
   function handleAddCard(card) {
+    setIsRenderLoading(true);
     api.newCardElement(card)
     .then((newCard) => {
       setCards([newCard, ...cards]);
@@ -120,11 +118,12 @@ function App() {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
-    .finally(() => renderLoading())
+    .finally(() => setIsRenderLoading(false))
   }; 
 
   /**Изменяем данные пользователя*/
   function handleUpdateUser(userInfo) {
+    setIsRenderLoading(true);
     api.editUserInfo(userInfo)
       .then((userInfoServer) => {
         setCurrentUser(userInfoServer);
@@ -133,11 +132,12 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => renderLoading())
+      .finally(() => setIsRenderLoading(false))
   }; 
 
   /**Изменить аватар пользователя*/
   function handleUpdateAvatar(data) {
+    setIsRenderLoading(true);
     api.editAvatar(data)
     .then((data) => {
       setCurrentUser(data)
@@ -146,7 +146,7 @@ function App() {
   .catch((err) => {
     console.log(`Ошибка: ${err}`);
   })
-  .finally(() => renderLoading())
+  .finally(() =>setIsRenderLoading(false))
 }; 
 
   return ( 
@@ -166,15 +166,13 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
-          isRenderLoading={isRenderLoading}
-          renderLoading={isRenderLoading}
+          isRenderLoading={isRenderLoading} 
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddCard}
           isRenderLoading={isRenderLoading}
-          renderLoading={isRenderLoading}
         />
         <ImagePopup 
             card={selectedCard} 
@@ -186,14 +184,12 @@ function App() {
          onClose={closeAllPopups}
          onDeleteCard={handleCardDelete}
          isRenderLoading={isRenderLoading}
-         renderLoading={isRenderLoading}
         />
         <EditAvatarPopup 
             isOpen={isEditAvatarPopupOpen} 
             onClose={closeAllPopups} 
             onUpdateAvatar={handleUpdateAvatar}
             isRenderLoading={isRenderLoading}
-            renderLoading={isRenderLoading}
             /> 
         <Footer />
     </div>
